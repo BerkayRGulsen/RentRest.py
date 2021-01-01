@@ -1,0 +1,12 @@
+from django.urls import path
+
+from Reservations import views
+
+urlpatterns = [
+
+    path('filteredCarList/', views.filteredCarList, name='filteredCarList'),
+    path('rent/<id>', views.rent, name='rent'),
+    path('carlist/', views.carList, name='carlist'),
+    path('', views.home, name='home'),
+
+]
