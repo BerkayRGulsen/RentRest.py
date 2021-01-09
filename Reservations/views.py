@@ -1,16 +1,31 @@
 from django.shortcuts import render, redirect
-
+from django.contrib import messages
 from Reservations.forms import FilteredListCars
+from datetime import date
 
 strr = []
 endd = []
-print(strr)
 
 
 def home(request):
+    from Reservations.models import Branch
+    branches = Branch.objects.all()
+
     form = FilteredListCars()
     context = {'form': form}
     return render(request, 'reservations/home.html', context)
+
+
+def contactPage(request):
+    from Reservations.models import Branch
+    branches = Branch.objects.all()
+
+    context = {'branches': branches}
+    return render(request, 'reservations/contact.html', context)
+
+
+def aboutUsPage(request):
+    return render(request, 'reservations/aboutUs.html')
 
 
 def carList(request, ):
@@ -35,20 +50,25 @@ def filteredCarList(request):
 
 
 
-    realBranch = Branch.objects.get(place=branch)
+        realBranch = Branch.objects.get(place=branch)
 
-    cars = Car.objects.filter(branch=realBranch, isActive=True)
-    filteredCars = []
-    for car in cars:
-        if not car.takeDate or (str > car.returnDate[len(car.takeDate) - 1]):
-            filteredCars.append(car)
-            continue
-        for i in range(len(car.takeDate) - 1):
-            if (str < car.takeDate[i] and end < car.returnDate[i]) or (
-                    str > car.returnDate[i] and end < car.takeDate[i + 1]):
+        cars = Car.objects.filter(branch=realBranch, isActive=True)
+        filteredCars = []
+        for car in cars:
+            if not car.takeDate or (str > car.returnDate[len(car.takeDate) - 1]):
                 filteredCars.append(car)
-    context = {'cars': filteredCars, 'takeDate': str, 'returnDate': end, }
-    return render(request, 'reservations/filteredCarList.html', context)
+                continue
+            for i in range(len(car.takeDate) - 1):
+                if (str < car.takeDate[i] and end < car.returnDate[i]) or (
+                        str > car.returnDate[i] and end < car.takeDate[i + 1]):
+                    filteredCars.append(car)
+        context = {'cars': filteredCars, 'takeDate': str, 'returnDate': end, }
+        return render(request, 'reservations/filteredCarList.html', context)
+
+    else:
+        context = {'form' : form}
+        messages.info(request, 'End Date should be after then Start Date!')
+        return render(request, 'reservations/home.html', context)
 
 
 def rent(request, id):
@@ -61,4 +81,6 @@ def rent(request, id):
     car.returnDate.append(give)
     car.save()
     Reservations.objects.create(receiveDate=take, deliveryDate=give, buyer=request.user.visitor, car=car)
-    return render(request, 'reservations/rent.html')
+    price = ((give-take).days)*car.price
+    context = {'car': car, 'takedate': take, 'givedate': give, 'price':price}
+    return render(request, 'reservations/rent.html', context)

@@ -31,6 +31,10 @@ class Visitor(models.Model):
 class Branch(models.Model):
     place = models.CharField(max_length=100)
     manager = models.ForeignKey(Visitor, models.SET_NULL, blank=True, null=True, )
+    adress = models.CharField(max_length=300, null=True)
+    phone = models.CharField(max_length=14, null=True)
+    mail = models.CharField(max_length=50, null=True)
+    fax = models.CharField(max_length=14,  null=True)
 
     def __str__(self):
         return self.place

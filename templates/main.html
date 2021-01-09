@@ -46,10 +46,10 @@
             <a class="nav-link" style="color: lightgray; font-size: larger" href="{% url 'carlist' %}">Cars</a>
         </li>
         <li class="nav-item margin-l-16">
-            <a class="nav-link" style="color: lightgray; font-size: larger" href="">About Us</a>
+            <a class="nav-link" style="color: lightgray; font-size: larger" href="{% url 'aboutUs' %}">About Us</a>
         </li>
         <li class="nav-item margin-l-16">
-            <a class="nav-link" style="color: lightgray; font-size: larger" href="">Contact</a>
+            <a class="nav-link" style="color: lightgray; font-size: larger" href="{% url 'contact' %}">Contact</a>
         </li>
 
       </ul>
@@ -92,7 +92,7 @@
 
 
 <!-- content -->
-<main class="flex-shrink-0 main" style="min-height: 600px; background-image: url({% static 'images/wp.png'%})">
+<main class="flex-shrink-0 main" style="min-height: 700px; background-image: url({% static 'images/wp.png'%})">
     {% block content %}
 	{% endblock %}
 </main>

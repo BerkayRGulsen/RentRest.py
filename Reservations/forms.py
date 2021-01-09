@@ -2,8 +2,8 @@ from django import forms
 
 
 
-class FilteredListCars(forms.Form):
 
+class FilteredListCars(forms.Form):
     branches = (
         ("Adana", "Adana"),
         ("İzmir", "İzmir"),
@@ -33,8 +33,13 @@ class FilteredListCars(forms.Form):
                                      })
                                      )
 
-
-
+    def clean(self):
+        cleaned_data = super().clean()
+        start_date = cleaned_data.get("takeDate")
+        end_date = cleaned_data.get("returnDate")
+        if end_date < start_date:
+            msg = u"End date should be greater than start date."
+            self._errors["end_date"] = self.error_class([msg])
 
 
 

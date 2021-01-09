@@ -9,6 +9,12 @@
 {% block content %}
 
 <div class="container py-5">
+    {% for message in messages %}
+        <div class="bg-danger text-center " style="height: 40px">
+            <p id="messages">{{ message }}</p>
+        </div>
+    {% endfor %}
+
     <div class="row">
         <div class="col-md-6 ">
             <div class="card-mb-4 box-shadow pt-2 pb-2" >
